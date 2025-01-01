@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e" pages="2">
     <diagram id="cxnEje1horbJYmb97XGU" name="Page-1">
-        <mxGraphModel dx="734" dy="1675" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="#000000" math="0" shadow="0">
+        <mxGraphModel dx="1062" dy="1675" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="#000000" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -44,7 +44,7 @@
                 </mxCell>
                 <mxCell id="13" value="Members" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;fontColor=#A75F37;" parent="1" vertex="1" collapsed="1">
                     <mxGeometry x="30" y="-520" width="100" height="30" as="geometry">
-                        <mxRectangle x="30" y="-510" width="250" height="220" as="alternateBounds"/>
+                        <mxRectangle x="30" y="-520" width="250" height="220" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="14" value="-membershipType:String&#10;-dateofMembership:String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;fontColor=#66FF66;" parent="13" vertex="1">
@@ -63,9 +63,9 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="17" value="LIBRAN" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;fontColor=#A75F37;" parent="1" vertex="1" collapsed="1">
-                    <mxGeometry x="-220" y="-510" width="90" height="30" as="geometry">
-                        <mxRectangle x="-120" y="-750" width="230" height="230" as="alternateBounds"/>
+                <mxCell id="17" value="LIBRAN" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;fontColor=#A75F37;" parent="1" vertex="1">
+                    <mxGeometry x="-200" y="-510" width="230" height="230" as="geometry">
+                        <mxRectangle x="-200" y="-510" width="90" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="18" value="-role:String&#10;-password:String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;fontColor=#66FF66;" parent="17" vertex="1">

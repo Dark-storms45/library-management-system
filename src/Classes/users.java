@@ -5,12 +5,14 @@ public  abstract class users {
     private String email;
     private String address;
     private String contact;
+    private  String sexe;
 
-public users(String name, String email, String address, String contact) {
+public users(String name, String email, String address, String contact,String sexe) {
     this.name = name;
     this.email = email;
     this.address = address;
     this.contact = contact;
+    this.sexe = sexe;
 }
 public String getName() {
     return name;
@@ -36,6 +38,12 @@ public String getContact() {
 }
 public void setContact(String contact) {    
     this.contact = contact;     
+}
+public  String getSexe(){
+    return sexe;
+}
+public  void setSexe(String sexe){
+    this.sexe = sexe;
 }
 public void display(){
     System.out.println("Name: "+name);
