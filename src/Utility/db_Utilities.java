@@ -66,18 +66,18 @@ public class db_Utilities {
       "MembershipPaymentstatus TEXT NOT NULL);");
 
 
-      Tables.put("librant","CREATE TABLE IF NOT EXIST lIBRANT("+
+      Tables.put("librant","CREATE TABLE IF NOT EXISTS librant("+
         "LibrantId INTEGER PRIMARY KEY AUTOINCREMENT, " +
         "LibrantName TEXT NOT NULL, " +
         "LibrantEmail TEXT NOT NULL, " +
-        "LibrantContact INTEGER NOT NULL, " +
+        "LibrantContact text NOT NULL, " +
         "LibrantAddress TEXT NOT NULL, " +
         "LibrantSalary REAL,"+
         "librantSexe TEXT NOT NULL,"+
         "LibrantType TEXT NOT NULL,"+
         "LibrantPassword TEXT NOT NULL);");
 
-        Tables.put("Books","CREATE TABLE IF NOT EXIST BOOKS("+
+        Tables.put("Books","CREATE TABLE IF NOT EXISTS Books("+
         "ISBN TEXT PRIMARY KEY NOT NULL,"+
         "Title TEXT NOT NULL,"+
         "Author TEXT NOT NULL,"+
@@ -85,7 +85,7 @@ public class db_Utilities {
         "PublicationYear TEXT NOT NULL,"+
         "Genre TEXT NOT NULL)");
         
-        Tables.put("Transaction","CREATE TABLE IF NOT EXIST TRANSACTION("+
+        Tables.put("Transaction","CREATE TABLE IF NOT EXISTS Transaction("+
         "TansactionId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
         "MemberId INTERGER NOT NULL,"+
         "BookId TEXT NOT NULL,"+
@@ -96,7 +96,7 @@ public class db_Utilities {
         "FORIENG KEY(MemberId) REFERENCES Members(MemberId)"+
         "FORIENG KEY(BookId) REFERENCES Books(ISBN))");
 
-        Tables.put("Reservation","CREATE TABLE IF NOT EXIST RESERVATION("+
+        Tables.put("Reservation","CREATE TABLE IF NOT EXISTS Reservation("+
         "ReservationId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
         "MemberId INTEGER NOT NULL,"+
         "BookId TEXT NOT NULL"+
@@ -105,14 +105,14 @@ public class db_Utilities {
         "FORIENG KEY(MemberId) REFERENCES Members(MemberId)"+
         "FORIENG KEY(BookId) REFERENCES BOOKS(ISBN))");
 
-        Tables.put("Notification ","CREATE TABLE IF NOT EXIST NOTIFICATION("+
+        Tables.put("Notification ","CREATE TABLE IF NOT EXISTS Notification("+
         "NotificationId INTEGER PRIMAR KEY NOT NULL,"+
         "MemberId INTEGER NOT NULL,"+
         "Date CURRENT_TIMESTAMP NOT NULL,"+
         "Content TEXT NOT NULL"+
         "FORIENG KEY(MemberId) REFERENCES Members(MemberId))");
 
-        Tables.put("complains", "CREATE TABLE IF NOT EXIST COMPLAINS("+ 
+        Tables.put("complains", "CREATE TABLE IF NOT EXISTS Complains("+ 
         "ComplainId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
         "MemberId INTEGER NOT NULL,"+
         "ComplainDate CURRENT_TIMESTAMP NOT NULL,"+
