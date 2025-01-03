@@ -105,21 +105,26 @@ public class db_Utilities {
         "FOREING KEY(MemberId) REFERENCES Members(MemberId),"+
         "FOREING KEY(BookId) REFERENCES BOOKS(ISBN))");
 
-        Tables.put("Notification ","CREATE TABLE IF NOT EXISTS Notification("+
-        "NotificationId INTEGER PRIMAR KEY NOT NULL,"+
-        "MemberId INTEGER NOT NULL,"+
-        "Date CURRENT_TIMESTAMP NOT NULL,"+
-        "Content TEXT NOT NULL,"+
-        "FOREING KEY(MemberId) REFERENCES Members(MemberId))");
-
-        Tables.put("complains", "CREATE TABLE IF NOT EXISTS Complains("+ 
-        "ComplainId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
-        "MemberId INTEGER NOT NULL,"+
-        "ComplainDate CURRENT_TIMESTAMP NOT NULL,"+
-        "ComplainContent TEXT NOT NULL,"+
-        "FOREING KEY(MemberId) REFERENCES Members(MemberId))");
-
-
+          Tables.put("Notification", "CREATE TABLE IF NOT EXISTS Notification (" +
+        "NotificationId INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        "MemberId INTEGER NOT NULL, " +
+        "Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, " +
+        "Content TEXT NOT NULL, " +
+        "FOREIGN KEY(MemberId) REFERENCES Members(MemberId))");
+          
+        Tables.put("Complains", "CREATE TABLE IF NOT EXISTS Complains (" +
+        "ComplainId INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        "MemberId INTEGER NOT NULL, " +
+        "ComplainDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, " +
+        "ComplainContent TEXT NOT NULL, " +
+        "FOREIGN KEY(MemberId) REFERENCES Members(MemberId))");
+Tables.put("Status", "CREATE TABLE IF NOT EXISTS Status (" +
+    "StatusId INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    "MemberId INTEGER NOT NULL, " +
+    "BookId INTEGER NOT NULL, " +
+    "Status TEXT NOT NULL, " +
+    "FOREIGN KEY(MemberId) REFERENCES Members(MemberId), " +
+    "FOREIGN KEY(BookId) REFERENCES Books(ISBN))");
          Connection connection ;
         connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\database.db");
         if(connection!=null){
