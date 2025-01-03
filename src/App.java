@@ -1,25 +1,31 @@
-import utility.Utilities.*;
+import Utility.Display;
+import Utility.db_Utilities;
+import Utility.login_utils;
+import java.sql.SQLException;
 import java.util.Scanner;
-import  utility.login_utils.login;
-import  utility.login_utils.register;
+
 public class App {
 
      /*Main menu function */
-    public void main_menu(){
+    public void main_menu() throws SQLException {
         String [] main_menu={
-        "1.login",
-        "2.Register",
-        "3.Exit"};
+        "login",
+        "Register",
+        "Exit"};
         Display.Display_menu(main_menu);
         Scanner input = new Scanner(System.in); 
         System.out.println("Enter your choice:");
         int choice = input.nextInt();
 
         if (choice==1){
-            login();
+           try {
+               login_utils.login();
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
         }
         else if (choice==2){
-            register();
+            login_utils.register();
         }
         else if (choice==3){
             System.exit(0);
@@ -30,7 +36,13 @@ public class App {
 
 
     }
-    public static void main(String[] args) throws Exception {
-        
-    }
-}
+  
+                public static void main(String[] args) throws SQLException {
+            
+            db_Utilities.dbConnection();
+            // db_Utilities.creatTables();
+            // Display.displayBox("Welcome to the Library Management System");
+                 } 
+                
+                }
+

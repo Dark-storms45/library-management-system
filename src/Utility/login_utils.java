@@ -14,12 +14,12 @@ public class login_utils {
     public static void  hash_password(String password){
         // Hash the password
         int hash = password.hashCode();
-        System.out.println("The hashed password is: " + hash);
+       // System.out.println("The hashed password is: " + hash);
     }
 
     public static boolean validate_password(String password){
 
-        if (password.length() < 8 && !password.matches(".*[A-Z].*") && !password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+        if (password.length() > 8 && password.matches(".*[A-Z].*") &&  password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
             
             return true;
     
@@ -96,6 +96,7 @@ public class login_utils {
         String confirm_password=sc.nextLine();
         while (true) {
             if (password.equals(confirm_password)) {
+                System.out.println("user created sucessfully");
                 break;
             } else {
                 System.out.println("Password does not match. Please enter the same password:");

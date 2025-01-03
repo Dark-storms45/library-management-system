@@ -1,7 +1,9 @@
 package Utility;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class db_Utilities {
@@ -13,7 +15,7 @@ public class db_Utilities {
         Connection connection = null;
         try {
             // Load the SQLite JDBC driver (you don't need this line if you are using a modern JDBC driver)
-            Class.forName("org.sqlite.JDBC");
+          //  Class.forName("org.sqlite.JDBC");
 
             // Create a connection to the database
             String url = "jdbc:sqlite:src\\database\\database.db";
@@ -23,17 +25,10 @@ public class db_Utilities {
 
         } catch (SQLException e) {
             System.out.println( " An error has occured "+e.getMessage());
-        } catch (ClassNotFoundException e) {
-            System.out.println("SQLite JDBC driver not found.");
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
         }
+         
     }
+    
     public static void db_CloseConnection(Connection connection) {
         if (connection != null) {
             try {
@@ -113,7 +108,7 @@ public class db_Utilities {
         "FORIENG KEY(MemberId) REFERENCES Members(MemberId))");
 
 
-         Connection connection = null;
+         Connection connection ;
         connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\database.db");
         if(connection!=null){
             for(String table:Tables.keySet()){
@@ -123,34 +118,42 @@ public class db_Utilities {
                 }catch(SQLException e){
                     System.out.println("An error occured while creating table "+table+" "+e.getMessage());
                 }
+                finally {
+                    try {
+                        if (connection != null) {
+                            connection.close();
+                    }
+                } catch (SQLException e) {
+                    System.out.println("An error occurred while closing the connection: " + e.getMessage());
+                            }
+            }
+            }
+
+    }
+}
+public static void add_record(HashMap<String, String> record, String table) throws SQLException {
+    String url = "jdbc:sqlite:src\\database\\database.db";
+    try (Connection connection = DriverManager.getConnection(url)) {
+        if (connection != null) {
+            String columns = String.join(",", record.keySet());
+            String placeholders = String.join(",", Collections.nCopies(record.size(), "?"));
+            String query = "INSERT INTO " + table + " (" + columns + ") VALUES (" + placeholders + ")";
+            
+            try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                int index = 1;
+                for (String key : record.keySet()) {
+                    pstmt.setString(index++, record.get(key));
+                }
+                pstmt.executeUpdate();
+                System.out.println("Record added successfully");
+            } catch (SQLException e) {
+                System.out.println("An error occurred while adding record: " + e.getMessage());
+                throw e;
             }
         }
-
-    }
-
-    public static void  add_record(HashMap<String,String>record,String table) throws SQLException{
-        Connection connection = null;
-        connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\database.db");
-        if(connection!=null){
-            try{
-                String columns="";
-                String values="";
-                for(String key:record.keySet()){
-                    columns+=key+",";
-                    values+=record.get(key)+",";
-                }
-                columns=columns.substring(0,columns.length()-1);
-                values=values.substring(0,values.length()-1);
-                String query="INSERT INTO "+table+"("+columns+") VALUES("+values+")";
-                connection.createStatement().execute(query);
-                System.out.println("Record added successfully");
-            }catch(SQLException e){
-                System.out.println("An error occured while adding record "+e.getMessage());
-            }
-        connection.close();
     }
 }
-}
+
 
 public static HashMap<String, String> fetch_record(String table, String filters, String fields) throws SQLException {
 Connection connection = null;
@@ -179,7 +182,8 @@ if (connection != null) {
 }
 return result;
 }
-}   
+}
+   
 
 
 
