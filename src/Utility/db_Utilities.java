@@ -93,8 +93,8 @@ public class db_Utilities {
         "ReturnDate DATETIME NOT NULL,"+
         "DueDate DATETIME NOT NULL,"+
         "FineAmount REAL NOT NULL"+
-        "FORIENG KEY(MemberId) REFERENCES Members(MemberId)"+
-        "FORIENG KEY(BookId) REFERENCES Books(ISBN))");
+        "FOREING KEY(MemberId) REFERENCES Members(MemberId),"+
+        "FOREING KEY(BookId) REFERENCES Books(ISBN))");
 
         Tables.put("Reservation","CREATE TABLE IF NOT EXISTS Reservation("+
         "ReservationId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
@@ -102,22 +102,22 @@ public class db_Utilities {
         "BookId TEXT NOT NULL"+
         "REservationDate DEFAULT CURRENT_TIMESTAMP,"+
         "Status Text NOT NULL"+
-        "FORIENG KEY(MemberId) REFERENCES Members(MemberId)"+
-        "FORIENG KEY(BookId) REFERENCES BOOKS(ISBN))");
+        "FOREING KEY(MemberId) REFERENCES Members(MemberId),"+
+        "FOREING KEY(BookId) REFERENCES BOOKS(ISBN))");
 
         Tables.put("Notification ","CREATE TABLE IF NOT EXISTS Notification("+
         "NotificationId INTEGER PRIMAR KEY NOT NULL,"+
         "MemberId INTEGER NOT NULL,"+
         "Date CURRENT_TIMESTAMP NOT NULL,"+
-        "Content TEXT NOT NULL"+
-        "FORIENG KEY(MemberId) REFERENCES Members(MemberId))");
+        "Content TEXT NOT NULL,"+
+        "FOREING KEY(MemberId) REFERENCES Members(MemberId))");
 
         Tables.put("complains", "CREATE TABLE IF NOT EXISTS Complains("+ 
         "ComplainId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
         "MemberId INTEGER NOT NULL,"+
         "ComplainDate CURRENT_TIMESTAMP NOT NULL,"+
-        "ComplainContent TEXT NOT NULL"+
-        "FORIENG KEY(MemberId) REFERENCES Members(MemberId))");
+        "ComplainContent TEXT NOT NULL,"+
+        "FOREING KEY(MemberId) REFERENCES Members(MemberId))");
 
 
          Connection connection ;
