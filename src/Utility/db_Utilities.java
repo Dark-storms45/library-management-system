@@ -15,7 +15,7 @@ public class db_Utilities {
         Connection connection = null;
         try {
             // Load the SQLite JDBC driver (you don't need this line if you are using a modern JDBC driver)
-          //  Class.forName("org.sqlite.JDBC");
+           Class.forName("org.sqlite.JDBC");
 
             // Create a connection to the database
             String url = "jdbc:sqlite:src\\database\\database.db";
@@ -25,6 +25,18 @@ public class db_Utilities {
 
         } catch (SQLException e) {
             System.out.println( " An error has occured "+e.getMessage());
+        }
+        catch (ClassNotFoundException e) {
+            System.out.println("An error has occured "+e.getMessage());
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("An error occurred while closing the connection: " + e.getMessage());
+            }
         }
          
     }
