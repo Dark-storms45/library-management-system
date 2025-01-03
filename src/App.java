@@ -1,8 +1,9 @@
+import java.sql.SQLException;
+import java.util.Scanner;
+
 import Utility.Display;
 import Utility.db_Utilities;
 import Utility.login_utils;
-import java.sql.SQLException;
-import java.util.Scanner;
 
 public class App {
 
@@ -17,23 +18,26 @@ public class App {
         System.out.println("Enter your choice:");
         int choice = input.nextInt();
 
-        if (choice==1){
-           try {
-               login_utils.login();
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
-        }
-        else if (choice==2){
-            login_utils.register();
-        }
-        else if (choice==3){
-            System.exit(0);
-        }
-        else{
-            System.out.println("Invalid choice");
-        }
 
+
+        switch (choice) {
+            case 1:
+            try {
+                login_utils.login();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+                break;
+            case 2:
+                login_utils.register();
+                break;
+            case 3:
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid choice");
+                break;
+        }
 
     }
   

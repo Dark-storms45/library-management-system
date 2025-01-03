@@ -1,8 +1,7 @@
 package Utility;
-import java.util.Scanner;
-import  java.util.HashMap;
 import java.sql.SQLException;
-import Utility.db_Utilities.*;
+import  java.util.HashMap;
+import java.util.Scanner;
 public class login_utils {
 
     /**function 
@@ -11,10 +10,11 @@ public class login_utils {
      * use : hash the password
      */
 
-    public static void  hash_password(String password){
+    public static int  hash_password(String password){
         // Hash the password
         int hash = password.hashCode();
        // System.out.println("The hashed password is: " + hash);
+       return hash;
     }
 
     public static boolean validate_password(String password){
@@ -104,14 +104,14 @@ public class login_utils {
             }
             
         }
-        HashMap<String,String> record=new HashMap<String,String>();
+        HashMap<String,String> record=new HashMap<>();
         record.put("name",name);
         record.put("email",email);
         record.put("contact",contact);
         record.put("address",address);
         record.put("sexe",sexe);
         record.put("role",role);
-        record.put("password",password);
+        record.put("password",hash_password(password)+"");
 
         try {
             db_Utilities.add_record(record, "users");
@@ -127,7 +127,7 @@ public class login_utils {
         String email=sc.nextLine();
         System.out.println("Enter your password:");
         String password=sc.nextLine();
-        HashMap<String,String> record=new HashMap<String,String>();
+        HashMap<String,String> record=new HashMap<>();
         record.put("email",email);
         record.put("password",password);
         try {

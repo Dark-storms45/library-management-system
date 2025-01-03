@@ -120,9 +120,9 @@ public class db_Utilities {
                 }
                 finally {
                     try {
-                        if (connection != null) {
+                    
                             connection.close();
-                    }
+                    
                 } catch (SQLException e) {
                     System.out.println("An error occurred while closing the connection: " + e.getMessage());
                             }
