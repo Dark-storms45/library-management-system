@@ -43,9 +43,13 @@ public class App {
   
                 public static void main(String[] args) throws SQLException {
             
-            db_Utilities.dbConnection();
-            // db_Utilities.creatTables();
-            // Display.displayBox("Welcome to the Library Management System");
+        
+             db_Utilities.creatTables();
+            Display.displayBox("Welcome to the Library Management System");
+            App app = new App();    
+            while (true) {
+                app.main_menu();
+            }
                  } 
                 
                 }
