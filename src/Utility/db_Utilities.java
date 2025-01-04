@@ -2,8 +2,10 @@ package Utility;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class db_Utilities {
@@ -75,7 +77,7 @@ public class db_Utilities {
             throw e;
         }
     }
-}
+
 
    public static void add_record(HashMap<String, String> record, String table) throws SQLException {
     String url = "jdbc:sqlite:src\\database\\database.db";
@@ -128,12 +130,7 @@ if (connection != null) {
 }
 return result;
 }
-}
-   
-
-
-
-
+} 
 
 
 
