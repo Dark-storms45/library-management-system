@@ -20,6 +20,17 @@ public class db_Utilities {
 
     public static void creatTables() throws SQLException {
         HashMap<String, String> Tables = new HashMap<>();
+
+        Tables.put("Members", "CREATE TABLE IF NOT EXISTS Members (" +
+      "MemberId INTEGER PRIMARY KEY AUTOINCREMENT, " +
+      "MemberName TEXT NOT NULL, " +
+      "MemberEmail TEXT NOT NULL, " +
+      "MemberContact TEXT NOT NULL, " + 
+      "MembershipType TEXT NOT NULL, " +
+      "MembershipStatus TEXT NOT NULL, " + 
+      "MembershipFee TEXT NOT NULL, " +
+      "MembershipExpiry DATETIME NOT NULL, " + 
+      "MembershipPaymentStatus TEXT NOT NULL);"); 
         
         Tables.put("Books", "CREATE TABLE IF NOT EXISTS Books (" +
             "ISBN TEXT PRIMARY KEY NOT NULL, " +
