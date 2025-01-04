@@ -3,6 +3,8 @@ package Utility;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
@@ -20,18 +22,17 @@ public class db_Utilities {
 
     public static void creatTables() throws SQLException {
         HashMap<String, String> Tables = new HashMap<>();
-
-        Tables.put("Members", "CREATE TABLE IF NOT EXISTS Members (" +
-      "MemberId INTEGER PRIMARY KEY AUTOINCREMENT, " +
-      "MemberName TEXT NOT NULL, " +
-      "MemberEmail TEXT NOT NULL, " +
-      "MemberContact TEXT NOT NULL, " + 
-      "MembershipType TEXT NOT NULL, " +
-      "MembershipStatus TEXT NOT NULL, " + 
-      "MembershipFee TEXT NOT NULL, " +
-      "MembershipExpiry DATETIME NOT NULL, " + 
-      "MembershipPaymentStatus TEXT NOT NULL);"); 
-        
+                Tables.put("Members", "CREATE TABLE IF NOT EXISTS Members (" +
+              "MemberId INTEGER PRIMARY KEY AUTOINCREMENT, " +
+              "MemberName TEXT NOT NULL, " +
+              "MemberEmail TEXT NOT NULL, " +
+              "MemberContact INTEGER NOT NULL, " +
+              "MembershipType TEXT NOT NULL, " +
+              "MenbershipStatus TEXT NOT NULL, " +
+              "MembershipFee TEXT NOT NULL, " +
+              "MEMBERSHIPEXPIRY DATETIME NOT NULL, " +
+              "MembershipPaymentstatus TEXT NOT NULL);");
+              
         Tables.put("Books", "CREATE TABLE IF NOT EXISTS Books (" +
             "ISBN TEXT PRIMARY KEY NOT NULL, " +
             "Title TEXT NOT NULL, " +
@@ -89,72 +90,54 @@ public class db_Utilities {
         }
     }
 
-
-   public static void add_record(HashMap<String, String> record, String table) throws SQLException {
-    String url = "jdbc:sqlite:src\\database\\database.db";
-    try (Connection connection = DriverManager.getConnection(url)) {
-        if (connection != null) {
-            String columns = String.join(",", record.keySet());
-            String placeholders = String.join(",", Collections.nCopies(record.size(), "?"));
-            String query = "INSERT INTO " + table + " (" + columns + ") VALUES (" + placeholders + ")";
-            
-            try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-                int index = 1;
-                for (String key : record.keySet()) {
-                    pstmt.setString(index++, record.get(key));
+    public static void add_record(HashMap<String, String> record, String table) throws SQLException {
+        String url = "jdbc:sqlite:src\\database\\database.db";
+        try (Connection connection = DriverManager.getConnection(url)) {
+            if (connection != null) {
+                String columns = String.join(",", record.keySet());
+                String placeholders = String.join(",", Collections.nCopies(record.size(), "?"));
+                String query = "INSERT INTO " + table + " (" + columns + ") VALUES (" + placeholders + ")";
+                
+                try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                    int index = 1;
+                    for (String key : record.keySet()) {
+                        pstmt.setString(index++, record.get(key));
+                    }
+                    pstmt.executeUpdate();
+                    System.out.println("Record added successfully");
+                } catch (SQLException e) {
+                    System.out.println("An error occurred while adding record: " + e.getMessage());
+                    throw e;
                 }
-                pstmt.executeUpdate();
-                System.out.println("Record added successfully");
+            }
+        }
+    }
+
+    public static HashMap<String, String> fetch_record(String table, String filters, String fields) throws SQLException {
+        Connection connection = null;
+        HashMap<String, String> result = new HashMap<>();
+        connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\database.db");
+        if (connection != null) {
+            try {
+                String query = "SELECT " + fields + " FROM " + table;
+                if (!filters.isEmpty()) {
+                    query += " WHERE " + filters;
+                }
+                ResultSet resultSet = connection.createStatement().executeQuery(query);
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                while (resultSet.next()) {
+                    for (int i = 1; i <= columnCount; i++) {
+                        result.put(metaData.getColumnName(i), resultSet.getString(i));
+                    }
+                }
+                System.out.println("Record fetched successfully");
             } catch (SQLException e) {
-                System.out.println("An error occurred while adding record: " + e.getMessage());
-                throw e;
+                System.out.println("An error occurred while fetching record " + e.getMessage());
+            } finally {
+                connection.close();
             }
         }
+        return result;
     }
 }
-
-
-public static HashMap<String, String> fetch_record(String table, String filters, String fields) throws SQLException {
-Connection connection = null;
-HashMap<String, String> result = new HashMap<>();
-connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\database.db");
-if (connection != null) {
-    try {
-        String query = "SELECT " + fields + " FROM " + table;
-        if (!filters.isEmpty()) {
-            query += " WHERE " + filters;
-        }
-        var resultSet = connection.createStatement().executeQuery(query);
-        var metaData = resultSet.getMetaData();
-        int columnCount = metaData.getColumnCount();
-        while (resultSet.next()) {
-            for (int i = 1; i <= columnCount; i++) {
-                result.put(metaData.getColumnName(i), resultSet.getString(i));
-            }
-        }
-        System.out.println("Record fetched successfully");
-    } catch (SQLException e) {
-        System.out.println("An error occurred while fetching record " + e.getMessage());
-    } finally {
-        connection.close();
-    }
-}
-return result;
-}
-} 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
