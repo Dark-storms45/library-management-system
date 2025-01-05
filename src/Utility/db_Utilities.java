@@ -19,20 +19,42 @@ public class db_Utilities {
         }
         return connection;
     }
+   public  static  void close_connection()throws SQLException{
+    Connection connection = dbConnection();
+    if (connection != null) {
+        try {
+        connection.close();
+        System.out.println("Connection closed successfully.");
+        } catch (SQLException e) {
+        System.out.println("An error occurred while closing the connection: " + e.getMessage());
+        throw e;
+        }
+    }
 
+   }
     public static void creatTables() throws SQLException {
         HashMap<String, String> Tables = new HashMap<>();
-                Tables.put("Members", "CREATE TABLE IF NOT EXISTS Members (" +
-              "MemberId INTEGER PRIMARY KEY AUTOINCREMENT, " +
-              "MemberName TEXT NOT NULL, " +
-              "MemberEmail TEXT NOT NULL, " +
-              "MemberContact INTEGER NOT NULL, " +
-              "MembershipType TEXT NOT NULL, " +
-              "MenbershipStatus TEXT NOT NULL, " +
-              "MembershipFee TEXT NOT NULL, " +
-              "MEMBERSHIPEXPIRY DATETIME NOT NULL, " +
-              "MembershipPaymentstatus TEXT NOT NULL);");
-              
+        
+        Tables.put("Members", "CREATE TABLE IF NOT EXISTS Members (" +
+            "MemberId INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "MemberName TEXT NOT NULL, " +
+            "MemberEmail TEXT NOT NULL, " +
+            "MemberContact TEXT NOT NULL, " +
+            "MembershipType TEXT NOT NULL, " +
+            "MembershipStatus TEXT NOT NULL, " +
+            "MembershipFee TEXT NOT NULL, " +
+            "MembershipExpiry DATETIME NOT NULL, " +
+            "MembershipPaymentStatus TEXT NOT NULL);");
+        
+        Tables.put("Librant", "CREATE TABLE IF NOT EXISTS Librant (" +
+            "LibrantId INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "LibrantName TEXT NOT NULL, " +
+            "LibrantEmail TEXT NOT NULL, " +
+            "LibrantContact TEXT NOT NULL, " +
+            "LibrantAddress TEXT NOT NULL, " +
+            "LibrantSalary REAL, " +
+            "LibrantSex TEXT NOT NULL);");
+        
         Tables.put("Books", "CREATE TABLE IF NOT EXISTS Books (" +
             "ISBN TEXT PRIMARY KEY NOT NULL, " +
             "Title TEXT NOT NULL, " +
@@ -109,6 +131,9 @@ public class db_Utilities {
                     System.out.println("An error occurred while adding record: " + e.getMessage());
                     throw e;
                 }
+                finally{
+                    close_connection();
+                }
             }
         }
     }
@@ -135,7 +160,7 @@ public class db_Utilities {
             } catch (SQLException e) {
                 System.out.println("An error occurred while fetching record " + e.getMessage());
             } finally {
-                connection.close();
+                close_connection();;
             }
         }
         return result;
