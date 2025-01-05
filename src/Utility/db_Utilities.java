@@ -37,6 +37,7 @@ public class db_Utilities {
             "LibrantId INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "LibrantName TEXT NOT NULL, " +
             "LibrantEmail TEXT NOT NULL, " +
+            "Password TEXT NOT NULL, " +
             "LibrantContact TEXT NOT NULL, " +
             "LibrantAddress TEXT NOT NULL, " +
             "LibrantSalary REAL, " +
