@@ -1,15 +1,18 @@
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import javax.swing.text.Utilities;
-
 import Utility.Display;
 import Utility.db_Utilities;
 import Utility.login_utils;
-import Utility.Utilities;
 
 public class App {
 
+    
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+    }
      /*Main menu function */
     public void main_menu() throws SQLException {
         String [] main_menu={
@@ -20,7 +23,6 @@ public class App {
         Scanner input = new Scanner(System.in); 
         System.out.println("Enter your choice:");
         int choice = input.nextInt();
-
 
 
         switch (choice) {
@@ -51,7 +53,7 @@ public class App {
              db_Utilities.creatTables();
             Display.displayBox("Welcome to the Library Management System");
                 app.main_menu();
-                Utilities.clear_Screen();
+                clearScreen();
             }
                  } 
                 
