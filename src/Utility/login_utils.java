@@ -114,7 +114,7 @@ public class login_utils {
         record.put("password",hash_password(password)+"");
 
         try {
-            db_Utilities.add_record(record, "users");
+            db_Utilities.add_record(record, "librant");
         } catch (SQLException e) {
             System.out.println("An error occured while adding record "+e.getMessage());
         }
