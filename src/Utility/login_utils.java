@@ -2,7 +2,6 @@ package Utility;
 import java.sql.SQLException;
 import  java.util.HashMap;
 import java.util.Scanner;
-
 public class login_utils {
 
     /**function 
@@ -113,6 +112,9 @@ public class login_utils {
         record.put("sexe",sexe);
         record.put("role",role);
         record.put("password",hash_password(password)+"");
+
+
+
 
         try {
             db_Utilities.add_record(record, "librant");
