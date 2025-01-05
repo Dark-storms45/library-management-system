@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -19,19 +18,7 @@ public class db_Utilities {
         }
         return connection;
     }
-   public  static  void close_connection()throws SQLException{
-    Connection connection = dbConnection();
-    if (connection != null) {
-        try {
-        connection.close();
-        System.out.println("Connection closed successfully.");
-        } catch (SQLException e) {
-        System.out.println("An error occurred while closing the connection: " + e.getMessage());
-        throw e;
-        }
-    }
 
-   }
     public static void creatTables() throws SQLException {
         HashMap<String, String> Tables = new HashMap<>();
         
@@ -96,11 +83,10 @@ public class db_Utilities {
             "FOREIGN KEY(MemberId) REFERENCES Members(MemberId), " +
             "FOREIGN KEY(BookId) REFERENCES Books(ISBN));");
 
-        try (Connection connection = dbConnection();
-             Statement stmt = connection.createStatement()) {
+        try (Connection connection = dbConnection()) {
             for (String table : Tables.keySet()) {
-                try {
-                    stmt.execute(Tables.get(table));
+                try (PreparedStatement pstmt = connection.prepareStatement(Tables.get(table))) {
+                    pstmt.execute();
                     System.out.println("Table " + table + " created successfully.");
                 } catch (SQLException e) {
                     System.out.println("An error occurred while creating table " + table + ": " + e.getMessage());
@@ -131,9 +117,6 @@ public class db_Utilities {
                     System.out.println("An error occurred while adding record: " + e.getMessage());
                     throw e;
                 }
-                finally{
-                    close_connection();
-                }
             }
         }
     }
@@ -160,7 +143,7 @@ public class db_Utilities {
             } catch (SQLException e) {
                 System.out.println("An error occurred while fetching record " + e.getMessage());
             } finally {
-                close_connection();;
+                connection.close();
             }
         }
         return result;
