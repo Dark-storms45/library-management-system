@@ -5,6 +5,19 @@
         "lib/**/*.jar",
         "c:\\Users\\TGV\\Downloads\\sqlite-jdbc-3.47.1.0.jar"
     ],
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch App",
+            "request": "launch",
+            "mainClass": "App",
+            "classpath": [
+                "lib/sqlite-jdbc-3.36.0.3.jar",
+                "src"
+            ]
+        }
+    ],
     "git.ignoreLimitWarning": true,
     "java.dependency.packagePresentation": "hierarchical",
     "maven.view": "hierarchical"
