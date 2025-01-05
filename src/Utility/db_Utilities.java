@@ -38,6 +38,7 @@ public class db_Utilities {
             "LibrantName TEXT NOT NULL, " +
             "LibrantEmail TEXT NOT NULL, " +
             "Password TEXT NOT NULL, " +
+            "Role TEXT NOT NULL, " +
             "LibrantContact TEXT NOT NULL, " +
             "LibrantAddress TEXT NOT NULL, " +
             "LibrantSalary REAL, " +

@@ -105,11 +105,11 @@ public class login_utils {
             
         }
         HashMap<String,String> record=new HashMap<>();
-        record.put("name",name);
-        record.put("email",email);
-        record.put("contact",contact);
-        record.put("address",address);
-        record.put("sexe",sexe);
+        record.put("LibrantName",name);
+        record.put("LibrantEmail",email);
+        record.put("LibrantContact",contact);
+        record.put("LibrantAddress",address);
+        record.put("LibrantSex",sexe);
         record.put("role",role);
         record.put("password",hash_password(password)+"");
 

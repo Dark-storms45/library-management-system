@@ -1,9 +1,12 @@
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import javax.swing.text.Utilities;
+
 import Utility.Display;
 import Utility.db_Utilities;
 import Utility.login_utils;
+import Utility.Utilities;
 
 public class App {
 
@@ -43,12 +46,12 @@ public class App {
   
                 public static void main(String[] args) throws SQLException {
             
-        
+                    while (true) {
+                        App app = new App();
              db_Utilities.creatTables();
             Display.displayBox("Welcome to the Library Management System");
-            App app = new App();    
-            while (true) {
                 app.main_menu();
+                Utilities.clear_Screen();
             }
                  } 
                 
