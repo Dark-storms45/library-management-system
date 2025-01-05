@@ -50,7 +50,7 @@ public class db_Utilities {
             "PublicationYear TEXT NOT NULL, " +
             "Genre TEXT NOT NULL);");
         
-        Tables.put("Transaction", "CREATE TABLE IF NOT EXISTS Transaction (" +
+        Tables.put("Transaction", "CREATE TABLE IF NOT EXISTS Transactions (" +
             "TransactionId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
             "MemberId INTEGER NOT NULL, " +
             "BookId TEXT NOT NULL, " +
