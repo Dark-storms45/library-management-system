@@ -150,4 +150,42 @@ public class db_Utilities {
         }
         return result;
     }
+    public static void update_record(HashMap<String, String> record, String table, String filters) throws SQLException {
+        String url = "jdbc:sqlite:src\\database\\database.db";
+        try (Connection connection = DriverManager.getConnection(url)) {
+            if (connection != null) {
+                String columns = String.join(",", record.keySet());
+                String placeholders = String.join(",", Collections.nCopies(record.size(), "?"));
+                String query = "UPDATE " + table + " SET " + columns + " WHERE " + filters;
+                
+                try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                    int index = 1;
+                    for (String key : record.keySet()) {
+                        pstmt.setString(index++, record.get(key));
+                    }
+                    pstmt.executeUpdate();
+                    System.out.println("Record updated successfully");
+                } catch (SQLException e) {
+                    System.out.println("An error occurred while updating record: " + e.getMessage());
+                    throw e;
+                }
+            }
+        }
+    }
+    public static void  delete_record(String table, String filters) throws SQLException {
+        String url = "jdbc:sqlite:src\\database\\database.db";
+        try (Connection connection = DriverManager.getConnection(url)) {
+            if (connection != null) {
+                String query = "DELETE FROM " + table + " WHERE " + filters;
+                
+                try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                    pstmt.executeUpdate();
+                    System.out.println("Record deleted successfully");
+                } catch (SQLException e) {
+                    System.out.println("An error occurred while deleting record: " + e.getMessage());
+                    throw e;
+                }
+            }
+        }
+    }
 }

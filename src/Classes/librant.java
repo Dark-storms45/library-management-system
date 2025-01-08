@@ -10,7 +10,10 @@ public class librant extends users {
         this.librantID = librantID;
         this.librantType = librantType;
         this.password = password;
+
     }
+
+
        
 
     public String getLibrantID() {
@@ -75,5 +78,25 @@ public class librant extends users {
         System.out.println("Librant Type: " + librantType);
         
     }
+
+    public void add_record(){
+
+
+
+    }
+
+    public void delete_record(){
+
+    }
+
+    public void update_record(){
+
+    }
+
+    public void send_Notification(){
+
+    }
+
+    
 
 }
