@@ -10,6 +10,7 @@
 *.orig
 *.log
 *.idea/
+*.vscode
 
 # Ignore OS-specific files
 .DS_Store
