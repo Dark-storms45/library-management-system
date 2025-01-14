@@ -1,3 +1,17 @@
-# Default ignored files
-/shelf/
-/workspace.xml
+# Ignore environment files
+.env
+.env.*
+
+# Ignore editor files
+*.swp
+*.swo
+*.bak
+*.tmp
+*.orig
+*.log
+*.idea/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
