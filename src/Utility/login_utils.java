@@ -136,7 +136,6 @@ public class login_utils {
                 if (libran.getLibrantType().equals("Admin")) {
                     System.out.println("Welcome, " + record.get("name"));
                     Display.displayBox("Welcome to the Admin dashboard");
-                    System.out.println();
                     Menu.Admin_menu();
 
                 } else {
@@ -151,5 +150,6 @@ public class login_utils {
             System.out.println("An error occured while fetching record " + e.getMessage());
         }
     }
+    
 
 }

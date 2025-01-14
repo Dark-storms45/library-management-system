@@ -1,5 +1,8 @@
 package Utility;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class Display {
 
 
@@ -65,4 +68,34 @@ public class Display {
        
            }
 
+ public static void Display_tables(HashMap<String, List<String>> tableData) {
+        // Print the table header
+        for (String key : tableData.keySet()) {
+            System.out.printf("%-10s |", key);
+        }
+        System.out.println();
+
+        // Determine the maximum number of rows
+        int maxRows = 0;
+        for (List<String> values : tableData.values()) {
+            if (values.size() > maxRows) {
+                maxRows = values.size();
+            }
+        }
+
+        // Print the table rows
+        for (int i = 0; i < maxRows; i++) {
+            for (String key : tableData.keySet()) {
+                List<String> values = tableData.get(key);
+                if (i < values.size()) {
+                    System.out.printf("%-10s |", values.get(i));
+                } else {
+                    System.out.printf("%-10s |", "");
+                }
+            }
+            System.out.println();
+        }
+    }
 }
+
+

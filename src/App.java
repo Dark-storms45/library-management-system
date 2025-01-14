@@ -1,14 +1,13 @@
 import java.sql.SQLException;
-import java.util.Scanner;
 
 import Utility.Display;
+import Utility.Menu;
 import Utility.Utilities;
 import Utility.db_Utilities;
-import Utility.login_utils;
 
 public class App {
 
-    /* Main menu function */
+    /* Main  function */
 
     public static void main(String[] args) throws SQLException {
 
@@ -16,7 +15,7 @@ public class App {
             App app = new App();
             db_Utilities.creatTables();
             Display.displayBox("Welcome to the Library Management System");
-            app.main_menu();
+        Menu.main_menu();
             Utilities.clear_Screen();
         }
     }

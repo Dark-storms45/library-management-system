@@ -6,19 +6,43 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+
+
 
 public class db_Utilities {
+
+    private static final String url = "jdbc:sqlite:src\\database\\database.db";
     public static Connection dbConnection() throws SQLException {
-        String url = "jdbc:sqlite:src/database/database.db";
+       
         Connection connection = DriverManager.getConnection(url);
         if (connection != null) {
             System.out.println("Connection to SQLite has been established.");
+           
         }
         return connection;
     }
+public static void close_Connection()throws SQLException{
 
+    Connection connection=dbConnection();
+
+    try {
+        if(connection != null){
+
+          connection.close();
+
+        }
+    } catch (SQLException e) {
+      System.out.println("An error occured while closing the database"+e.getMessage());
+    }
+}
+/**
+ * function to creat the  tables  in the database if it does not exist yet
+ * @throws SQLException
+ */
     public static void creatTables() throws SQLException {
         HashMap<String, String> Tables = new HashMap<>();
         
@@ -99,16 +123,23 @@ public class db_Utilities {
             throw e;
         }
     }
-
+/**
+ * 
+ * @param record type Hashmap :  key-coulumn where the field wld be added and data added -value 
+ * @param table  type String : table name in which the data wld be added
+ * @return  null
+ * @throws SQLException
+ */
     public static void add_record(HashMap<String, String> record, String table) throws SQLException {
-        String url = "jdbc:sqlite:src\\database\\database.db";
-        try (Connection connection = DriverManager.getConnection(url)) {
-            if (connection != null) {
+        
+        
+          dbConnection();
+            if (dbConnection() != null) {
                 String columns = String.join(",", record.keySet());
                 String placeholders = String.join(",", Collections.nCopies(record.size(), "?"));
                 String query = "INSERT INTO " + table + " (" + columns + ") VALUES (" + placeholders + ")";
                 
-                try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                try (PreparedStatement pstmt = dbConnection().prepareStatement(query)) {
                     int index = 1;
                     for (String key : record.keySet()) {
                         pstmt.setString(index++, record.get(key));
@@ -119,41 +150,63 @@ public class db_Utilities {
                     System.out.println("An error occurred while adding record: " + e.getMessage());
                     throw e;
                 }
-            }
-        }
-    }
-
-    public static HashMap<String, String> fetch_record(String table, String filters, String fields) throws SQLException {
-        Connection connection = null;
-        HashMap<String, String> result = new HashMap<>();
-        connection = DriverManager.getConnection("jdbc:sqlite:src\\database\\database.db");
-        if (connection != null) {
-            try {
-                String query = "SELECT " + fields + " FROM " + table;
-                if (!filters.isEmpty()) {
-                    query += " WHERE " + filters;
+                finally{
+                close_Connection();
+                
                 }
-                ResultSet resultSet = connection.createStatement().executeQuery(query);
+            }
+        
+    }
+    /**
+     * 
+     * @param fields type String : the  data to fetch from the database
+     * @param table type String: The table name from which the data wld be fetch
+     * @param filters type String: used to fielter the field(s) fetched
+     * @return  type: Hashmap  returns the coulumn name as key and the fetch data as value
+     * @throws SQLException
+     */ 
+    public static HashMap<String, String> fetch_record(String fields, String table, String filters) throws SQLException {
+        HashMap<String, String> result = new HashMap<>();
+        
+        try (Connection connection = dbConnection()) {
+            String query = "SELECT " + (fields.isEmpty() ? "*" : fields) + " FROM " + table;
+            if (!filters.isEmpty()) {
+                query += " WHERE " + filters;
+            }
+            try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                ResultSet resultSet = pstmt.executeQuery();
                 ResultSetMetaData metaData = resultSet.getMetaData();
                 int columnCount = metaData.getColumnCount();
-                while (resultSet.next()) {
-                    for (int i = 1; i <= columnCount; i++) {
+                if (resultSet.next()) {
+                    for (int i = 1; i <= columnCount; ++i) {
                         result.put(metaData.getColumnName(i), resultSet.getString(i));
                     }
                 }
-                System.out.println("Record fetched successfully");
             } catch (SQLException e) {
-                System.out.println("An error occurred while fetching record " + e.getMessage());
-            } finally {
-                connection.close();
+                System.out.println("An error occurred while fetching record: " + e.getMessage());
+                throw e;
             }
+        } catch (SQLException e) {
+            System.out.println("An error occurred while establishing the connection: " + e.getMessage());
+            throw e;
+        } finally {
+            close_Connection();
         }
         return result;
     }
+    /**
+     * Function to  update record inthe database
+     * @param record of type hashmap
+     * @param table type String : table name from  which the data wld be updated
+     * @param filters type String: data in the db to be modified
+     * @throws SQLException
+     */
+
     public static void update_record(HashMap<String, String> record, String table, String filters) throws SQLException {
-        String url = "jdbc:sqlite:src\\database\\database.db";
-        try (Connection connection = DriverManager.getConnection(url)) {
-            if (connection != null) {
+        
+        try  {
+          Connection connection=  dbConnection();
+            if (dbConnection() != null) {
                 String columns = String.join(",", record.keySet());
                 String placeholders = String.join(",", Collections.nCopies(record.size(), "?"));
                 String query = "UPDATE " + table + " SET " + columns + " WHERE " + filters;
@@ -171,12 +224,24 @@ public class db_Utilities {
                 }
             }
         }
+        catch(SQLException e){
+            System.err.println("An error occur while openning the database "+e.getMessage());
+        }
     }
+
+
+    /**
+     * function to  delete data  from a table in the database
+     * @param table table from which the data wld be deleted
+     * @param filters field to be deleted
+     * @throws SQLException
+     * @return  returns  null
+     */
     public static void  delete_record(String table, String filters) throws SQLException {
-        String url = "jdbc:sqlite:src\\database\\database.db";
-        try (Connection connection = DriverManager.getConnection(url)) {
+       
+        try (Connection connection =dbConnection()) {
             if (connection != null) {
-                String query = "DELETE FROM " + table + " WHERE " + filters;
+                String query = "DELETE FROM " + table + " WHERE "+table.toLowerCase()+"Id =" + filters;
                 
                 try (PreparedStatement pstmt = connection.prepareStatement(query)) {
                     pstmt.executeUpdate();
@@ -185,7 +250,50 @@ public class db_Utilities {
                     System.out.println("An error occurred while deleting record: " + e.getMessage());
                     throw e;
                 }
-            }
         }
     }
+    finally{
+        close_Connection();
+    }
+}
+/**
+ * Function to fetch all column names and their corresponding values from a table
+ * @param table type String: The table name from which the data will be fetched
+ * @return type: HashMap<String, List<String>> returns the column name as key and the fetched data as value
+ * @throws SQLException
+ */
+public static HashMap<String, List<String>> fetchAllRecords(String table) throws SQLException {
+    HashMap<String, List<String>> result = new HashMap<>();
+
+    try (Connection connection = dbConnection()) {
+        String query = "SELECT * FROM " + table;
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            ResultSet resultSet = pstmt.executeQuery();
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            // Initialize the result map with column names
+            for (int i = 1; i <= columnCount; ++i) {
+                result.put(metaData.getColumnName(i), new ArrayList<>());
+            }
+
+            // Populate the result map with data
+            while (resultSet.next()) {
+                for (int i = 1; i <= columnCount; ++i) {
+                    result.get(metaData.getColumnName(i)).add(resultSet.getString(i));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("An error occurred while fetching records: " + e.getMessage());
+            throw e;
+        }
+    } catch (SQLException e) {
+        System.out.println("An error occurred while establishing the connection: " + e.getMessage());
+        throw e;
+    } finally {
+        close_Connection();
+    }
+    return result;
+}
+
 }

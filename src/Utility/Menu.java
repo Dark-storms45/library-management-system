@@ -3,6 +3,7 @@ package Utility;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+
 public class Menu {
 
     private String Menu_name;
@@ -16,30 +17,25 @@ public class Menu {
         Display.displayBox("Welcome to " + getMenu_name() + "menu");
         System.out.println();
 
-        System.out.println("Enter your choice");
-        int user_input = sc.nextInt();
-
+     
         String[] arr = {
             "Add" + getMenu_name(),
             "Remove" + getMenu_name(),
             "update a" + getMenu_name()+"content",
-          
+            "search a" + getMenu_name() + "content",
+            "logout"
           };
+          if(getMenu_name().trim().toLowerCase().equals("Notification")){
+                arr[5]="Send Notification";
+                arr[6]="Delete Notification";
+          }
 
-        switch (user_input) {
+            else if(getMenu_name().trim().toLowerCase().equals("transaction")){
+                arr[5]="Process Transaction";
+                arr[6]="Delete Transaction";
 
-            case 1 -> {
-
-            }
-            case 2 -> {
-
-            }
-            case 3 -> {
-
-            }
-
+              
         }
-
     }
 
     public String getMenu_name() {
@@ -52,7 +48,7 @@ public class Menu {
 
     }
 
-    public void main_menu() throws SQLException {
+    public static void main_menu() throws SQLException {
         String[] main_menu = {
             "login",
             "Register",
@@ -149,5 +145,8 @@ public class Menu {
         }
 
     }
+
+    
+
 
 }
