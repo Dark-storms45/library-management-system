@@ -5,9 +5,9 @@ public class librant extends users {
     private String librantType;
     private String password;
 
-    public librant(String name, String email, String address, String contact, String sexe, String librantID, String
+    public librant(String name, String email, String address, String contact, String sex, String librantID, String
      librantType, String password) {
-        super(name, email, address, contact, sexe);
+        super(name, email, address, contact, sex);
         this.librantID = librantID;
         this.librantType = librantType;
         this.password = password;

@@ -71,7 +71,7 @@ public class Display {
  public static void Display_tables(HashMap<String, List<String>> tableData) {
         // Print the table header
         for (String key : tableData.keySet()) {
-            System.out.printf("%-10s |", key);
+            System.out.printf("%-50s |", key,"%-170s");
         }
         System.out.println();
 
@@ -88,9 +88,9 @@ public class Display {
             for (String key : tableData.keySet()) {
                 List<String> values = tableData.get(key);
                 if (i < values.size()) {
-                    System.out.printf("%-10s |", values.get(i));
+                    System.out.printf("%-50s |", values.get(i) ,"%-90s");
                 } else {
-                    System.out.printf("%-10s |", "");
+                    System.out.printf("%-50s |", "%-90s","");
                 }
             }
             System.out.println();

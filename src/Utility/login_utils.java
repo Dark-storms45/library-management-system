@@ -7,14 +7,14 @@ import java.util.Scanner;
 import Classes.librant;
 
 public class login_utils {
-
+private static final  Scanner input = new Scanner(System.in);
     /**
-     * function return :void parrameter :password use : hash the password
+     * function return :void parameter :password use : hash the password
      */
     public static int hash_password(String password) {
         // Hash the password
         int hash = password.hashCode();
-        // System.out.println("The hashed password is: " + hash);
+        
         return hash;
     }
 
@@ -41,100 +41,101 @@ public class login_utils {
     }
 
     /**
-     * return :void parrameter :none use : register user and add it to the
+     * return :void parameter :none use : register user and add it to the
      * database
      */
     public static void register() throws SQLException {
 
-        Scanner sc = new Scanner(System.in);
+
 
         System.out.println("Enter your name:");
-        String name = sc.nextLine();
+        String name = input.nextLine();
 
         System.out.println("Enter your contact:");
-        String contact = sc.nextLine();
+        String contact = input.nextLine();
 
         System.out.println("Enter your role:");
-        String role = sc.nextLine();
+        String role = input.nextLine();
 
-        System.out.println("Enter your sexe:");
-        String sexe = sc.nextLine();
+        System.out.println("Enter your sex:");
+        String sex = input.nextLine();
 
         System.out.println("Enter your address:");
-        String address = sc.nextLine();
+        String address = input.nextLine();
 
         System.out.println("Enter your email:");
-        String email = sc.nextLine();
+        String email = input.nextLine();
 
         while (true) {
             if (email_validation(email) == true) {
                 break;
             } else {
                 System.out.println("Invalid email. Please enter a valid email:");
-                email = sc.nextLine();
+                email = input.nextLine();
             }
 
         }
 
         System.out.println("Enter your password:");
-        String password = sc.nextLine();
+        String password = input.nextLine();
         while (true) {
             if (validate_password(password) == true) {
                 break;
             } else {
-                System.out.println("make sure your password is atlest 8 character long and contains atlease one special character and an uppercase letter:");
-                password = sc.nextLine();
+                System.out.println("make sure your password is at least 8 characters long and contains at least one special character and an uppercase letter:");
+                password = input.nextLine();
             }
 
         }
 
         System.out.println("Enter  the confirm  password:");
-        String confirm_password = sc.nextLine();
+        String confirm_password = input.nextLine();
         while (true) {
             if (password.equals(confirm_password)) {
-                System.out.println("user created sucessfully");
+                System.out.println("user created successfully");
                 break;
             } else {
                 System.out.println("Password does not match. Please enter the same password:");
-                confirm_password = sc.nextLine();
+                confirm_password = input.nextLine();
             }
 
         }
-        HashMap<String, String> record = new HashMap<>();
+        HashMap<String, Object> record = new HashMap<>();
         record.put("LibrantName", name);
         record.put("LibrantEmail", email);
         record.put("LibrantContact", contact);
         record.put("LibrantAddress", address);
-        record.put("LibrantSex", sexe);
+        record.put("LibrantSex", sex);
         record.put("role", role);
         record.put("password", hash_password(password) + "");
 
         try {
             db_Utilities.add_record(record, "librant");
         } catch (SQLException e) {
-            System.out.println("An error occured while adding record " + e.getMessage());
+            System.out.println("An error occurred while adding record " + e.getMessage());
         }
 
     }
 
     public static void login() throws SQLException {
-        Scanner sc = new Scanner(System.in);
+
         System.out.println("Enter your email:");
-        String email = sc.nextLine();
+        String email = input.nextLine();
         System.out.println("Enter your password:");
-        String password = sc.nextLine();
+        String password = input.nextLine();
         HashMap<String, String> record = new HashMap<>();
         record.put("email", email);
         record.put("password", password);
-        try {
-            hash_password(password);
-            int hashedPassword = password.hashCode();
-            record = db_Utilities.fetch_record("librant", "LibrantEmail equals" + email, "*");
 
-            librant libran = new librant(record.get("LibrantName"), record.get("LibrantEmail"), record.get("LibrantContact"), record.get("LibrantSex"), record.get("LibrantId"), record.get("LibrantType"), record.get("password"), "additionalParameter");
-            if (libran.getPassword().equals(hashedPassword + "")) {
-                if (libran.getLibrantType().equals("Admin")) {
-                    System.out.println("Welcome, " + record.get("name"));
+        try {
+
+            String hashedPassword = String.valueOf(hash_password(password)); ;
+            record = db_Utilities.fetch_record("LibrantEmail", "Librant" , email);
+
+           // librant libran = new librant(record.get("LibrantName"), record.get("LibrantEmail"), record.get("LibrantAdress"), record.get("LibrantContact") , record.get("LibrantSex"), record.get("LibrantId"), record.get("LibrantType"),String.valueOf( record.get("password")));
+            if (String.valueOf(record.get("Password")).equals(hashedPassword)) {
+                if (record.get("Role").equals("Admin")) {
+                    System.out.println("Welcome, " + record.get("LibrantName"));
                     Display.displayBox("Welcome to the Admin dashboard");
                     Menu.Admin_menu();
 
@@ -144,10 +145,13 @@ public class login_utils {
 
             } else {
                 System.out.println("Invalid email or password.");
+                if(record.isEmpty()){
+                    System.out.println("no data in here");
+                }
             }
 
         } catch (SQLException e) {
-            System.out.println("An error occured while fetching record " + e.getMessage());
+            System.out.println("An error  while fetching record " + e.getMessage());
         }
     }
     

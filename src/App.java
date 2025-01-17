@@ -17,9 +17,9 @@ public class App {
             db_Utilities.creatTables();
 
             Display.displayBox("Welcome to the Library Management System");
-        Menu.main_menu();
-            Utilities.clear_Screen();
-        }
-    }
+            Menu.main_menu();
 
+        }
+
+    }
 }

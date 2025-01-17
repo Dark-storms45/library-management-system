@@ -20,5 +20,14 @@ public class Utilities {
             System.out.println("Something went wrong : " + e.getMessage());
         }
     }
+    public static void sleep(int seconds) {
+        try {
+
+            Thread.sleep(seconds);
+        } catch ( Exception e) {
+            // This is thrown if the sleep is interrupted
+            System.err.println("Sleep was interrupted: " );
+        }
+    }
 
 }
