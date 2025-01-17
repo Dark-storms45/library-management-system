@@ -3,55 +3,22 @@ package Utility;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import  services.books_services;
+import services.member_services;
+import services.reservation_services;
+import services.transanction_services;
+
+
 
 public class Menu {
 
-    private String Menu_name;
 
-    public Menu(String Menu_name) {
-        this.Menu_name = Menu_name;
-    }
-
-    public void display_menue() {
-        Scanner sc = new Scanner(System.in);
-        Display.displayBox("Welcome to " + getMenu_name() + "menu");
-        System.out.println();
-
-     
-        String[] arr = {
-            "Add" + getMenu_name(),
-            "Remove" + getMenu_name(),
-            "update a" + getMenu_name()+"content",
-            "search a" + getMenu_name() + "content",
-            "logout"
-          };
-          if(getMenu_name().trim().toLowerCase().equals("Notification")){
-                arr[5]="Send Notification";
-                arr[6]="Delete Notification";
-          }
-
-            else if(getMenu_name().trim().toLowerCase().equals("transaction")){
-                arr[5]="Process Transaction";
-                arr[6]="Delete Transaction";
-
-              
-        }
-    }
-
-    public String getMenu_name() {
-        return Menu_name;
-    }
-
-    public void setMenu_name(String name) {
-
-        this.Menu_name = name;
-
-    }
+    
+ 
 
     public static void main_menu() throws SQLException {
         String[] main_menu = {
             "login",
-            "Register",
             "Exit"};
         Display.Display_menu(main_menu);
         Scanner input = new Scanner(System.in);
@@ -67,8 +34,6 @@ public class Menu {
                 }
             }
             case 2 ->
-                login_utils.register();
-            case 3 ->
                 System.exit(0);
             default ->
                 System.out.println("Invalid choice");
@@ -76,12 +41,12 @@ public class Menu {
 
     }
 
-    public static void user_menu() {
+    public static void user_menu() throws SQLException {
         String[] user_menu = {
             "Books",
-            " Reservation",
+            "members",
             "Transaction",
-            "Notification",
+            " Reservation",
             "Logout"
         };
         Display.Display_menu(user_menu);
@@ -91,26 +56,33 @@ public class Menu {
 
         switch (choice) {
             case 1 ->
-                System.out.println("Add Book");
+                books_services.book_menu();
             case 2 ->
-                System.out.println("Remove Book");
-            case 3 ->
-                System.out.println("Process Transaction");
-            case 4 ->
+             member_services.member_menu();
+             
+            case 3 ->{
+                transanction_services.transaction_menu();
+            }
+                case 4 ->{
+                    reservation_services.reservation_menu();
+
+                }
+              
+            case 5 ->
                 System.exit(0);
             default ->
                 System.out.println("Invalid choice");
         }
     }
 
-    public static void Admin_menu() {
+    public static void Admin_menu() throws SQLException {
 
         String[] arr = {
             "users",
             "Books",
             "Transaction",
-            "Notification",
-            "complains",
+            "Staff",
+            "reservation",
             "logout"
         };
 
@@ -122,22 +94,21 @@ public class Menu {
 
             switch (choice) {
                 case 1 -> {
-                    // Code for Books
                 }
                 case 2 -> {
-                    // Code for Users
+                    books_services.book_menu();
                 }
                 case 3 -> {
-                    // Code for Transactions
+                    transanction_services.transaction_menu();
                 }
                 case 4 -> {
-                    // Code for Notification
+                   /// notification_menu();
                 }
                 case 5 -> {
-                    // Code for Complains
+                    reservation_services.reservation_menu();
                 }
                 case 6 -> {
-                    // Code for Logout
+                    System.exit(0);
                 }
                 default ->
                     System.err.println("Invalid choice, enter a valid choice");
@@ -145,6 +116,8 @@ public class Menu {
         }
 
     }
+
+    
 
     
 

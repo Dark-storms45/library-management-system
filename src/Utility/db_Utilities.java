@@ -13,6 +13,7 @@ import java.util.List;
 
 
 
+
 public class db_Utilities {
 
     private static final String url = "jdbc:sqlite:src\\database\\database.db";
@@ -52,10 +53,8 @@ public static void close_Connection()throws SQLException{
             "MemberEmail TEXT NOT NULL, " +
             "MemberContact TEXT NOT NULL, " +
             "MembershipType TEXT NOT NULL, " +
-            "MembershipStatus TEXT NOT NULL, " +
             "MembershipFee TEXT NOT NULL, " +
-            "MembershipExpiry DATETIME NOT NULL, " +
-            "MembershipPaymentStatus TEXT NOT NULL);");
+            "MembershipExpiry DATETIME NOT NULL );");
         
         Tables.put("Librant", "CREATE TABLE IF NOT EXISTS Librant (" +
             "LibrantId INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -81,25 +80,10 @@ public static void close_Connection()throws SQLException{
             "MemberId INTEGER NOT NULL, " +
             "BookId TEXT NOT NULL, " +
             "IssueDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
-            "ReturnDate DATETIME NOT NULL, " +
             "DueDate DATETIME NOT NULL, " +
             "FineAmount REAL NOT NULL, " +
             "FOREIGN KEY(MemberId) REFERENCES Members(MemberId), " +
             "FOREIGN KEY(BookId) REFERENCES Books(ISBN));");
-        
-        Tables.put("Notification", "CREATE TABLE IF NOT EXISTS Notification (" +
-            "NotificationId INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "MemberId INTEGER NOT NULL, " +
-            "Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, " +
-            "Content TEXT NOT NULL, " +
-            "FOREIGN KEY(MemberId) REFERENCES Members(MemberId));");
-        
-        Tables.put("Complains", "CREATE TABLE IF NOT EXISTS Complains (" +
-            "ComplainId INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "MemberId INTEGER NOT NULL, " +
-            "ComplainDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, " +
-            "ComplainContent TEXT NOT NULL, " +
-            "FOREIGN KEY(MemberId) REFERENCES Members(MemberId));");
         
         Tables.put("Status", "CREATE TABLE IF NOT EXISTS Status (" +
             "StatusId INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -262,10 +246,37 @@ public static void close_Connection()throws SQLException{
  * @return type: HashMap<String, List<String>> returns the column name as key and the fetched data as value
  * @throws SQLException
  */
-public static HashMap<String, List<String>> fetchAllRecords(String table) throws SQLException {
+public static HashMap<String, List<String>> fetchAllRecords(String table,String filter) throws SQLException {
     HashMap<String, List<String>> result = new HashMap<>();
 
     try (Connection connection = dbConnection()) {
+        if (true) {
+            String query = "SELECT * FROM " + table;
+            if (!filter.isEmpty()) {
+                query += " WHERE " + filter;
+            }
+            try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                ResultSet resultSet = pstmt.executeQuery();
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                // Initialize the result map with column names
+                for (int i = 1; i <= columnCount; ++i) {
+                    result.put(metaData.getColumnName(i), new ArrayList<>());
+                }
+
+                // Populate the result map with data
+                while (resultSet.next()) {
+                    for (int i = 1; i <= columnCount; ++i) {
+                        result.get(metaData.getColumnName(i)).add(resultSet.getString(i));
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("An error occurred while fetching records: " + e.getMessage());
+                throw e;
+            }
+            
+        }
         String query = "SELECT * FROM " + table;
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             ResultSet resultSet = pstmt.executeQuery();
