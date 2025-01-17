@@ -1,6 +1,7 @@
 # Ignore environment files
 .env
 .env.*
+.class
 
 # Ignore editor files
 *.swp
@@ -10,6 +11,7 @@
 *.orig
 *.log
 *.idea/
+*.vscode
 
 # Ignore OS-specific files
 .DS_Store
